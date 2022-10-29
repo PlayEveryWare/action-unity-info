@@ -1,0 +1,50 @@
+name: PlayEveryWare/action-unity-info
+description: Build metadata information about a Unity project
+
+inputs:
+  path:
+    decription: Root path
+    default: '.'
+    required: true
+  project-version:
+    description: >
+      Optional path to the Unity ProjectVersion.txt file. If this is empty, the
+      action will attempt to locate the file automatically. This automatic
+      discovery will only succeed if there is exactly one
+      ProjectSettings/ProjectVersion.txt file in the root folder. This path is
+      relative to the path input above.
+    required: false
+  check-image:
+    description: >
+      If true, will check if the proper Unity image for the project is
+      built and available on the PlayEveryWare container registry. This
+      requires a GitHub access token with read permissions to the Unity image
+      on the container registry
+    default: true
+    required: true
+  image-token:
+    description: Access token used for the container registry
+    default: ${{ github.token }}
+    required: false
+
+outputs:
+  project-path:
+    description: Path to the Unity Project
+  unity-version:
+    description: Unity version of the project
+  unity-changeset:
+    description: Changeset corresponding to unity-version
+  library-folder-exists:
+    description: Boolean indicating the existence of the Unity Library/ folder
+  image-name:
+    description: >
+      URL to the PlayEveryWare base Unity container image for the project version
+  image-exists:
+    description: >
+      Boolean indicating the existence of the PlayEveryWare Unity container
+      image. This value is only defined with the input check-image is set to
+      true.
+
+runs:
+  using: node16
+  main: dist/index.js
