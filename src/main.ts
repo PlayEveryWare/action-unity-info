@@ -53,6 +53,11 @@ async function determinUnityVersion(): Promise<UnityVersion> {
 
     const lines = fs.readFileSync(projectVersion).toString().split('\n')
 
+    // trim trailing carriage returns
+    for (const ii in lines) {
+      lines[ii] = lines[ii].trimRight()
+    }
+
     // check if we have a newer ProjectVersion.txt with the changeset embedded
     const changesetRegExp = new RegExp('^m_EditorVersionWithRevision: ([^ ]*) \\(([^)]*)\\)$')
     for (const line of lines) {
